@@ -22,17 +22,28 @@ A Rust application that watches for new files in an input directory, processes t
 
 1. **Clone and Build**:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/Moustafaa91/concurrent_file_processor
    cd concurrent_file_processor
-   cargo build --release
+   cargo build 
    ```
 
-2. **Run the Application**:
+2. **Run the Application**: 
    ```bash
+   # Make sure to add an environment variable named RUST_LOG and value could be (info, error, warn, debug) 
    cargo run
    ```
+   
+   ```bash
+   # or, use this command for Windows OS
+   $env:RUST_LOG="info"; cargo run
+   ```
+   
+   ```bash
+   # Linux
+   RUST_LOG=info cargo run
+   ```
 
-3. **Test with Files**:
+4. **Test with Files**:
    ```bash
    # Add some test files to the input directory
    echo "Hello, World!" > input_files/test.txt
@@ -44,7 +55,7 @@ The application uses a **Strategy Pattern** to allow for flexible file processin
 
 ### Built-in Processing Strategies
 
-1. **HashProcessingStrategy** (Default): Computes SHA256 hash of file content
+1. **HashProcessingStrategy**: Computes SHA256 hash of file content
 2. **TextAnalysisStrategy**: Analyzes text files for word count, character count, and line count
 
 ### Creating Custom Processing Strategies
@@ -189,18 +200,7 @@ recursive = true
 5. **Monitor Logs**:
    Check the `logs` directory for detailed processing information
 
-## Development
-
-### Running Tests
-```bash
-cargo test
-```
-
-### Running Examples
-```bash
-# Run the custom processing example
-cargo run --example custom_processing
-```
+## Developmet
 
 ### Building for Production
 ```bash
@@ -208,10 +208,7 @@ cargo build --release
 ```
 
 ### Logging During Development
-```bash
-# Set log level to debug for more detailed output
-RUST_LOG=debug cargo run
-```
+change *RUST_LOG=debug* before *cargo run*
 
 ## Troubleshooting
 
@@ -234,15 +231,6 @@ RUST_LOG=debug cargo run
    - Large files are loaded entirely into memory
    - Consider implementing streaming processing for very large files
 
-### Debug Mode
-```bash
-# Enable debug logging
-RUST_LOG=debug cargo run
-
-# Check specific module logs
-RUST_LOG=processor=debug,watcher=info cargo run
-```
-
 ## Production Deployment
 
 For production deployment, consider the following:
@@ -255,74 +243,10 @@ For production deployment, consider the following:
 6. **Resource Limits**: Monitor CPU and memory usage, especially for large files
 7. **Backup Strategy**: Implement backup procedures for processed files
 
-### Systemd Service (Linux)
-```ini
-[Unit]
-Description=Concurrent File Processor
-After=network.target
-
-[Service]
-Type=simple
-User=fileprocessor
-WorkingDirectory=/opt/concurrent_file_processor
-ExecStart=/opt/concurrent_file_processor/concurrent_file_processor
-Restart=always
-RestartSec=10
-
-[Install]
-WantedBy=multi-user.target
-```
-
-## Why TOML?
-
-TOML was chosen over YAML for this Rust application because:
-
-- **Better Rust Ecosystem Support**: TOML is the standard for Rust projects (Cargo.toml)
-- **Type Safety**: Better integration with Rust's type system and serde
-- **Less Ambiguous Syntax**: Clearer semantics than YAML
-- **Better Error Messages**: More helpful when configuration is malformed
-- **Native Rust Support**: First-class support in the Rust ecosystem
-
-## Architecture
-
-The application consists of several modules:
-
-- **`config`**: Configuration management using TOML
-- **`watcher`**: File system monitoring
-- **`processor`**: File processing logic with strategy pattern implementation
-- **`utils`**: Utility functions for file operations
-- **`logging`**: Logging configuration and utilities
-- **`error`**: Custom error types and handling
-
-### Processing Architecture
-
-The processing system is built around the Strategy Pattern:
-
-1. **FileProcessor**: Main orchestrator that handles file operations
-2. **ProcessingStrategy**: Trait defining the interface for processing logic
-3. **Concrete Strategies**: Implementations of specific processing logic
-4. **Background Processing**: CPU-intensive operations run in blocking threads
-
-## Error Handling
-
-The application includes comprehensive error handling:
-
-- File system errors (IO errors, permission issues)
-- File locking detection and retry logic
-- Configuration parsing errors
-- Logging errors
-- Processing strategy errors
-
-All errors are logged with appropriate context and the application continues running where possible.
-
 ## Contributing
 
 1. Fork the repository
 2. Create a feature branch
 3. Implement your changes
-4. Add tests for new functionality
+4. Add tests for new functionality if needed
 5. Submit a pull request
-
-## License
-
-[Add your license information here]
