@@ -1,0 +1,38 @@
+# Concurrent File Processor Configuration
+# This file contains all configuration settings for the application
+
+[processing]
+# Maximum number of retries for file operations
+max_retries = 10
+# Initial retry delay in milliseconds
+initial_retry_delay_ms = 100
+# Maximum retry delay in seconds
+max_retry_delay_sec = 2
+# Output file extension for processed files
+output_extension = ".processed.txt"
+# File locked error code for Windows systems
+file_locked_error_code = 32
+
+[directories]
+# Input directory where files to be processed are placed
+input_dir = "./input_files"
+# Output directory where processed files are saved
+output_dir = "./output_files"
+
+[logging]
+# Log level: debug, info, warn, error
+level = "info"
+# Directory where log files are stored
+log_dir = "logs"
+# Base name for log files (will be appended with timestamp)
+log_basename = "app_log"
+# Whether to duplicate logs to stdout
+duplicate_to_stdout = true
+
+[watcher]
+# Channel buffer size for watcher events
+channel_buffer_size = 32
+# Delay in milliseconds before processing new files (allows file system operations to complete)
+processing_delay_ms = 50
+# Whether to watch directories recursively
+recursive = true 
